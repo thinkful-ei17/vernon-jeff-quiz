@@ -5,54 +5,93 @@ const questionList = [
 
   //First question
   {
-    question: 'What planet is Rey from?',
+    question: 'Inside which HTML element do we put the JavaScript?',
     answerOptions: [
-      'Jakku',
-      'Tatooine',
-      'Endor',
-      'Taris'
+      '<scripting>',
+      ' <js>',
+      '<javascript>',
+      '<script>'
     ],
-    correctAnswer: 'Jakku',
+    correctAnswer: '<script>',
     answerSelect: 1,
     questionAsked: false,
   },
   //Second question
   {
-    question: 'Inside which HTML element do we put the JavaScript?',
+    question: 'What is an argument?',
     answerOptions: [
-      'Purple',
-      'Blue',
-      'Green',
-      'Red'
+      'The function’s parameters upon declaration',
+      'A variable that gets passed to the function when its called.',
+      'A function that has no parameters',
+      'A variable assigned to a function'
     ],
-    correctAnswer: 'Green',
+    correctAnswer: 'A variable that gets passed to the function when its called.',
     answerSelect: 2,
     questionAsked: false,
   },
   //Third question
   {
-    question: 'What is the group of dark side users that Kylo Ren leads?',
+    question: 'Which value is ‘falsy’?',
     answerOptions: [
-      'Knights of Ren',
-      'The First Order',
-      'The Sith Order',
-      'Acolytes of Snoke'
+      '2',
+      '“False”',
+      '“”',
+      '‘Truthy’'
     ],
-    correctAnswer: 'Knights of Ren',
+    correctAnswer: '""',
     answerSelect: 3,
     questionAsked: false,
   },
   //Fourth Question
   {
-    question: 'What movie does Emperor Palpatine first appear in?',
+    question: 'what is typeof x for: var y = 1, x = y = typeof x;',
     answerOptions: [
-      'Episode 6',
-      'Episode 5',
-      'Episode 1',
-      'Episode 4'
+      '"number"',
+      'undefined',
+      '"undefined"',
+      'x'
     ],
-    correctAnswer: 'Episode 5',
+    correctAnswer: '"undefined"',
     answerSelect: 4,
+    questionAsked: false,
+  },
+  //Fifth Question
+  {
+    question: 'Which will correctly comment out the text?',
+    answerOptions: [
+      '// “Test Text” //',
+      '/“Test Text”/',
+      '*/ “Test Text” /*',
+      '\\ “Test Text \\'
+    ],
+    correctAnswer: '// “Test Text” //',
+    answerSelect: 5,
+    questionAsked: false,
+  },
+  //Sixth Question
+  {
+    question: 'For ECMAscript, what does ECMA stand for?',
+    answerOptions: [
+      'European Association for Standardizing Information and Communication Systems',
+      'European Council for Making and Arranging JavaScript Principles',
+      'European Association for Strategizing Implementation of Communication Systems',
+      'European Antarctican Massachusetts Alliance for JavaScript'
+    ],
+    correctAnswer: 'European Association for Standardizing Information and Communication Systems',
+    answerSelect: 6,
+    questionAsked: false,
+  },
+  //Seventh Question
+  {
+    question: 'What does the following run in the console: "The morning is upon us.".slice(-3)',
+    answerOptions: [
+      '"us."',
+      'undefined',
+      '"the morning is upon us"',
+      'us'
+    ],
+    correctAnswer: '"us."',
+    answerSelect: 7,
     questionAsked: false,
   },
 ];
@@ -62,6 +101,7 @@ const store = {
   view: 'start',
   score: 0,
   submitBtnClicked: false,
+  quizCompleted: false,
 };
 
 
@@ -74,6 +114,10 @@ function generateRandomQuestion() {
   let availableQs = questionList.filter(function (n){
     return n.questionAsked === false;
   });
+  if (availableQs.length === 0) {
+    store.quizCompleted = true;
+    return null;
+  }
   let max = availableQs.length - 1;
   let min = 0;
   let random = Math.floor(Math.random() * (max - min + 1) + min);
@@ -144,14 +188,22 @@ function generateAnswerList(QuestionGenerator) {
   QuestionGenerator();
   console.log(randomQuestion);
   $('.question-title-container').html(`${randomQuestion.question}`)
-  $('.question-list').html(`<input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}'>
+  $('.question-list').html(`
+  <div class='input-section'>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}'>
   <label for="form-option-1">${randomQuestion.answerOptions[0]}</label>
+  </div>
+  <div class='input-section'>
   <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[1]}'>
   <label for="form-option-2">${randomQuestion.answerOptions[1]}</label>
+  </div>
+  <div class='input-section'>
   <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[2]}'>
   <label for="form-option-3">${randomQuestion.answerOptions[2]}</label>
+  </div>
+  <div class='input-section'>
   <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[3]}'>
-  <label for="form-option-4">${randomQuestion.answerOptions[3]}</label>`)
+  <label for="form-option-4">${randomQuestion.answerOptions[3]}</label></div>`)
   ;
 }
 
@@ -187,6 +239,10 @@ function handleNextQuestionButton () {
       store.submitBtnClicked = false;
       console.log(store.submitBtnClicked);
       generateAnswerList(generateRandomQuestion);
+    }
+    if (store.quizCompleted === true) {
+      store.view = 'results';
+      render();
     }
   });
 }
