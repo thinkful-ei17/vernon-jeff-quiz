@@ -331,6 +331,7 @@ function handleStartButton() {
     console.log('js-start-btn was clicked.');
     store.view = 'quiz';
     updateCounter();
+    generateAnswerList(generateRandomQuestion);
     render();
   });
 }
@@ -408,11 +409,11 @@ function handleStartOverButton () {
     questionList = defaultQuestionList();
     // updateCounter();
     console.log(store.currentQuestionCount);
-    $('.question-title-container').html(
-      `<div class='question-counter'>
-      Question # ${store.currentQuestionCount}
-      </div>
-      ${randomQuestion.question}`);
+    // $('.question-title-container').html(
+    //   `<div class='question-counter'>
+    //   Question # ${store.currentQuestionCount}
+    //   </div>
+    //   ${randomQuestion.question}`);
     render();
     console.log(store.currentQuestionCount);
   });
