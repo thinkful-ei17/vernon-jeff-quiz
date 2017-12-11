@@ -84,7 +84,7 @@ function render(){
 
 
 //Event handlers
-function nextScene () {
+function nextQuestion () {
 
 }
 
