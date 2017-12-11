@@ -13,11 +13,12 @@ const questionList = [
       'Taris'
     ],
     correctAnswer: 'Jakku',
-    answerSelect: 1
+    answerSelect: 1,
+    answerUsed: false,
   },
   //Second question
   {
-    question: 'What color is Lukes lightsaber in Return of the jedi?',
+    question: 'Inside which HTML element do we put the JavaScript?',
     answerOptions: [
       'Purple',
       'Blue',
@@ -25,7 +26,8 @@ const questionList = [
       'Red'
     ],
     correctAnswer: 'Green',
-    answerSelect: 2
+    answerSelect: 2,
+    answerUsed: false,    
   },
   //Third question
   {
@@ -37,7 +39,8 @@ const questionList = [
       'Acolytes of Snoke'
     ],
     correctAnswer: 'Knights of Ren',
-    answerSelect: 3
+    answerSelect: 3,
+    answerUsed: false,    
   },
   //Fourth Question
   {
@@ -49,17 +52,47 @@ const questionList = [
       'Episode 4'
     ],
     correctAnswer: 'Episode 5',
-    answerSelect: 4
+    answerSelect: 4,
+    answerUsed: false,
   },
 ];
+
 //Initial store
 const store = {
   view: 'start',
   score: 0,
+  submitBtnClicked: false,
 };
 
 
 //Template generators
+
+let randomQuestion;
+
+function generateRandomQuestion() {
+  let max = questionList.length; 
+  let min = 1;
+  let random = Math.floor(Math.random() * (max - min + 1) + min);
+  randomQuestion = questionList.find(item => item.answerSelect === random); 
+  // findAnswerUsed = questionList.find(item => )
+  // let counter = 0;
+  // if (counter !== questionList.length){
+  //   // return 
+  // }
+
+  // if (randomQuestion.answerUsed === true) {
+  //   counter++;
+  //   generateRandomQuestion();
+  // }
+
+  console.log(random);
+  //Match randomQuestion's answerSelect value to the answerSelect 
+  //in original array of objects, (find) then change answerUsed
+  //of original object.answerUsed if there's a match
+  // console.log(questionList[random].answerUsed);
+  return randomQuestion; 
+}
+
 
 
 //Rendering Functions
@@ -81,65 +114,72 @@ function render(){
   }
 }
 
+function generateAnswerList(QuestionGenerator) {
+  QuestionGenerator();
+  console.log(randomQuestion);
+  $('.question-title-container').html(`${randomQuestion.question}`)
+  $('.question-list').html(`<input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}'>
+  <label for="form-option-1">${randomQuestion.answerOptions[0]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[1]}'>
+  <label for="form-option-2">${randomQuestion.answerOptions[1]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[2]}'>
+  <label for="form-option-3">${randomQuestion.answerOptions[2]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[3]}'>
+  <label for="form-option-4">${randomQuestion.answerOptions[3]}</label>`)
+  ;
+}
+
+
 
 
 //Event handlers
-function nextQuestion () {
-
-}
+// function nextQuestion () {
+// }
 
 function handleStartButton() {
-
-  $(".start").on("click",".js-start-btn", function () {
-    console.log("js-start-btn was clicked.");
-
-    store.view = "quiz";
-
+  $('.start').on('click','.js-start-btn', function () {
+    console.log('js-start-btn was clicked.');
+    store.view = 'quiz';
     render();
-
   });
-
-
 }
 
 function handleSubmitButton () {
-  $("#quiz-form").submit(function (event) {
+  $('#quiz-form').submit(function (event) {
     event.preventDefault();
-    console.log("js-submit-btn was clicked.");
-
-    render();
-
+    console.log('js-submit-btn was clicked.');
+    store.submitBtnClicked = true;   
+    console.log(store.submitBtnClicked);    
   });
 }
 
 function handleNextQuestionButton () {
-  $(".quiz").on("click",".js-next-question-btn", function () {
-    console.log("js-next-question-btn was clicked.");
-
-    store.view = "results";
-    render();
-
+  $('.quiz').on('click','.js-next-question-btn', function () {
+    console.log('js-next-question-btn was clicked.');
+    event.preventDefault();
+    if (store.submitBtnClicked === true) {
+      store.submitBtnClicked = false; 
+      console.log(store.submitBtnClicked);
+      generateAnswerList(generateRandomQuestion);  
+    }            
   });
 }
 
 function handleStartOverButton () {
-  $(".results").on("click",".js-startover-btn", function () {
-    console.log("js-startover-btn was clicked.");
-
-    store.view = "start";
-
+  $('.results').on('click','.js-startover-btn', function () {
+    console.log('js-startover-btn was clicked.');
+    store.view = 'start';
     render();
-
   });
 }
 //Function that initializes all event listeners when DOM is ready
 function handleQuizEventListeners() {
-  nextScene();
+  render();
   handleStartButton();
   handleNextQuestionButton();
   handleSubmitButton();
   handleStartOverButton();
-  render();
+  generateAnswerList(generateRandomQuestion);
 }
 
 $(handleQuizEventListeners);
