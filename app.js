@@ -14,7 +14,7 @@ const questionList = [
     ],
     correctAnswer: 'Jakku',
     answerSelect: 1,
-    answerUsed: false,
+    questionAsked: false,
   },
   //Second question
   {
@@ -27,7 +27,7 @@ const questionList = [
     ],
     correctAnswer: 'Green',
     answerSelect: 2,
-    answerUsed: false,    
+    questionAsked: false,
   },
   //Third question
   {
@@ -40,7 +40,7 @@ const questionList = [
     ],
     correctAnswer: 'Knights of Ren',
     answerSelect: 3,
-    answerUsed: false,    
+    questionAsked: false,
   },
   //Fourth Question
   {
@@ -53,7 +53,7 @@ const questionList = [
     ],
     correctAnswer: 'Episode 5',
     answerSelect: 4,
-    answerUsed: false,
+    questionAsked: false,
   },
 ];
 
@@ -68,29 +68,55 @@ const store = {
 //Template generators
 
 let randomQuestion;
-
+let counter = 0;
+const objs = [];
 function generateRandomQuestion() {
-  let max = questionList.length; 
-  let min = 1;
+  let availableQs = questionList.filter(function (n){
+    return n.questionAsked === false;
+  });
+  let max = availableQs.length - 1;
+  let min = 0;
   let random = Math.floor(Math.random() * (max - min + 1) + min);
-  randomQuestion = questionList.find(item => item.answerSelect === random); 
-  // findAnswerUsed = questionList.find(item => )
-  // let counter = 0;
-  // if (counter !== questionList.length){
-  //   // return 
-  // }
-
-  // if (randomQuestion.answerUsed === true) {
-  //   counter++;
-  //   generateRandomQuestion();
-  // }
+  randomQuestion = availableQs[random];
 
   console.log(random);
-  //Match randomQuestion's answerSelect value to the answerSelect 
-  //in original array of objects, (find) then change answerUsed
-  //of original object.answerUsed if there's a match
-  // console.log(questionList[random].answerUsed);
-  return randomQuestion; 
+  console.log(availableQs);
+
+  randomQuestion.questionAsked = true;
+
+  // arr = list of objs that have questionAsked set as true
+  // counter = arr.length
+
+  //
+//   questionList[random].questionAsked = true;
+//   //
+// // retrieve how many of ur obj have questionAsked set to true.
+// //
+//
+//   let s = questionList.forEach(function (obj) {
+//     console.log("nope?");
+//     console.log(obj.questionAsked);
+//      return obj.questionAsked === true;
+//   });
+//
+//   console.log("!!!!");
+//   console.log(s);
+//
+//   // if (counter !== questionList.length){
+//   //   // return
+//   // }
+//   //
+//   // if (randomQuestion.questionAsked === true) {
+//   //   counter++;
+//   //   generateRandomQuestion();
+//   // }
+
+  console.log(random);
+  //Match randomQuestion's answerSelect value to the answerSelect
+  //in original array of objects, (find) then change questionAsked
+  //of original object.questionAsked if there's a match
+  // console.log(questionList[random].questionAsked);
+  return randomQuestion;
 }
 
 
@@ -148,8 +174,8 @@ function handleSubmitButton () {
   $('#quiz-form').submit(function (event) {
     event.preventDefault();
     console.log('js-submit-btn was clicked.');
-    store.submitBtnClicked = true;   
-    console.log(store.submitBtnClicked);    
+    store.submitBtnClicked = true;
+    console.log(store.submitBtnClicked);
   });
 }
 
@@ -158,10 +184,10 @@ function handleNextQuestionButton () {
     console.log('js-next-question-btn was clicked.');
     event.preventDefault();
     if (store.submitBtnClicked === true) {
-      store.submitBtnClicked = false; 
+      store.submitBtnClicked = false;
       console.log(store.submitBtnClicked);
-      generateAnswerList(generateRandomQuestion);  
-    }            
+      generateAnswerList(generateRandomQuestion);
+    }
   });
 }
 
