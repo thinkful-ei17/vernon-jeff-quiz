@@ -172,8 +172,8 @@ function generateAnswerList(QuestionGenerator) {
   $('.question-title-container').html(
     `<div class='question-counter'>
     Question # ${store.currentQuestionCount}
-    </div>
-    ${randomQuestion.question}`);
+    <span class="separator">: </span>
+    <span class="question">${randomQuestion.question}</span> </div>`);
 
   $('.question-list').html(`
   <div class='input-section'>

@@ -8,6 +8,8 @@ html, body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+
+    font-size: 1em;
 }
 
 
@@ -20,8 +22,9 @@ html, body {
 }
 
 body {
-  position: relative;
+
 }
+
 header {
   text-align: center;
 }
@@ -29,16 +32,36 @@ header {
 main {
   margin: 0 auto;
   margin-top: 10vh;
-  max-width: 60vw;
+  max-width: 50vw;
   max-height: 70vh;
 
-  border: 5px solid black;
+  padding-top: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+
+  background-color: #c7c7c7;
 }
 
 header {
   margin-top: 5vh;
 }
 
+.question-counter {
+  font-size: 1.1em;
+  font-weight: 500;
+
+  margin: 0 10px 10px 10px;
+}
+
+.question {
+  font-weight: bold;
+}
+
+.separator {
+
+}
 
 /*.question-list {
   text-align: left;
