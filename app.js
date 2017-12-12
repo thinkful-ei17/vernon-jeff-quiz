@@ -128,11 +128,8 @@ function generateRandomQuestion() {
   console.log(random);
   console.log(availableQs);
   store.randomQuestion.questionAsked = true;
-  console.log(random);
   return store.randomQuestion;
 }
-
-
 
 /////Rendering Functions//////
 function render(){
@@ -145,16 +142,17 @@ function render(){
     $('.quiz').show();
     $('.start').hide();
     $('.results').hide();
+    (generateAnswerList(generateRandomQuestion));
   }
   else if (store.view === 'results') {
     $('.results').show();
     $('.start').hide();
-    $('.quiz').hide();
+    $('.quiz').hide();   
   }
 }
 
-function generateAnswerList(QuestionGenerator) {
-  QuestionGenerator();
+function generateAnswerList(generateRandomQuestion) {
+  generateRandomQuestion();
   console.log(store.randomQuestion);
   $('.question-title-container').html(
     `<div class='question-counter'>
@@ -181,7 +179,6 @@ function generateAnswerList(QuestionGenerator) {
   ;
 }
 
-
 //////Event handlers//////
 
 
@@ -191,8 +188,8 @@ function handleStartButton() {
     console.log('js-start-btn was clicked.');
     store.view = 'quiz';
     updateCounter();
-    generateAnswerList(generateRandomQuestion);
     render();
+    // generateAnswerList(generateRandomQuestion);
   });
 }
 
@@ -248,15 +245,15 @@ function handleNextQuestionButton () {
       ++store.currentQuestionCount;
       store.submitBtnClicked = false;
       console.log(store.submitBtnClicked);
-      generateAnswerList(generateRandomQuestion);
+      // generateAnswerList(generateRandomQuestion);
     }
     if (store.quizCompleted === true) {
       store.view = 'results';
       store.currentQuestionCount = 1;
       // generateAnswerList(QuestionGenerator);
-      updateCounter();
-      render();
     }
+    updateCounter();
+    render();
   });
 }
 
@@ -284,12 +281,10 @@ function handleStartOverButton () {
 
 //Function that initializes all event listeners when DOM is ready
 function handleQuizEventListeners() {
-  render();//Necessary?
   handleStartButton();
   handleNextQuestionButton();
   handleSubmitButton();
   handleStartOverButton();
-  generateAnswerList(generateRandomQuestion);//Necessary?
 }
 
 $(handleQuizEventListeners);
