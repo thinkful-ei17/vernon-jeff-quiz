@@ -143,10 +143,11 @@ function render(){
     $('.quiz').show();
     $('.start').hide();
     $('.results').hide();
-    (generateAnswerList(generateRandomQuestion));
-    resetCorrectUpdaterHtml();
+    checkSubmitBtnClicked();
     updateCounter();
     checkQuizCompleted();
+    (generateAnswerList(generateRandomQuestion));
+    resetCorrectUpdaterHtml();
   }
   else if (store.view === 'results') {
     $('.results').show();
@@ -207,7 +208,7 @@ function checkCorrectAnswer() {
 
 function checkSubmitBtnClicked () {
   if (store.submitBtnClicked === true) {
-    ++store.currentQuestionCount;
+    store.currentQuestionCount++;
     store.submitBtnClicked = false;
     console.log(store.submitBtnClicked);
   }
@@ -228,7 +229,6 @@ function resetCorrectUpdaterHtml() {
     $('.correct-updater').html('');
   }
 }
-
 
 //Function that handles if the user was incorrect
 function userInCorrectAnswerSubmitted(answer) {
@@ -270,7 +270,7 @@ function handleNextQuestionButton () {
   $('.quiz').on('click','.js-next-question-btn', function () {
     console.log('js-next-question-btn was clicked.');
     event.preventDefault();
-    checkSubmitBtnClicked();
+    // checkSubmitBtnClicked();
     render();
   });
 }
@@ -281,17 +281,9 @@ function handleStartOverButton () {
   $('.results').on('click','.js-startover-btn', function () {
     console.log('js-startover-btn was clicked.');
     store.view = 'start';
-    // store.score = 0;
-    // store.currentQuestionCount = 1;
     store = defaultStore();
     questionList = defaultQuestionList();
-    // updateCounter();
     console.log(store.currentQuestionCount);
-    // $('.question-title-container').html(
-    //   `<div class='question-counter'>
-    //   Question # ${store.currentQuestionCount}
-    //   </div>
-    //   ${randomQuestion.question}`);
     render();
     console.log(store.currentQuestionCount);
   });
