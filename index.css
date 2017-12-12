@@ -18,3 +18,28 @@ html, body {
 .results {
   display: none;
 }
+
+body {
+  position: relative;
+}
+header {
+  text-align: center;
+}
+
+main {
+  margin: 0 auto;
+  margin-top: 10vh;
+  max-width: 60vw;
+  max-height: 70vh;
+
+  border: 5px solid black;
+}
+
+header {
+  margin-top: 5vh;
+}
+
+
+/*.question-list {
+  text-align: left;
+}*/

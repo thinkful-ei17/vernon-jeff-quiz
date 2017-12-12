@@ -1,109 +1,10 @@
 'use strict';
 
 //In-memory database of questions
-let questionList = [
-
-  //First question
-  {
-    question: 'Inside which HTML element do we put the JavaScript?',
-    answerOptions: [
-      'scripting',
-      ' js',
-      'javascript',
-      'script'
-    ],
-    correctAnswer: 'script',
-    answerSelect: 1,
-    questionAsked: false,
-  },
-  //Second question
-  {
-    question: 'What is an argument?',
-    answerOptions: [
-      'The function’s parameters upon declaration',
-      'A variable that gets passed to the function when its called.',
-      'A function that has no parameters',
-      'A variable assigned to a function'
-    ],
-    correctAnswer: 'A variable that gets passed to the function when its called.',
-    answerSelect: 2,
-    questionAsked: false,
-  },
-  //Third question
-  {
-    question: 'Which value is ‘falsy’?',
-    answerOptions: [
-      '2',
-      '“False”',
-      '""',
-      '‘Truthy’'
-    ],
-    correctAnswer: '""',
-    answerSelect: 3,
-    questionAsked: false,
-  },
-  //Fourth Question
-  {
-    question: 'what is typeof x for: var y = 1, x = y = typeof x;',
-    answerOptions: [
-      '"number"',
-      'undefined',
-      '"undefined"',
-      'x'
-    ],
-    correctAnswer: '"undefined"',
-    answerSelect: 4,
-    questionAsked: false,
-  },
-  //Fifth Question
-  {
-    question: 'Which will correctly comment out the text?',
-    answerOptions: [
-      '// “Test Text” //',
-      '/“Test Text”/',
-      '*/ “Test Text” /*',
-      '\\ “Test Text \\'
-    ],
-    correctAnswer: '// “Test Text” //',
-    answerSelect: 5,
-    questionAsked: false,
-  },
-  //Sixth Question
-  {
-    question: 'For ECMAscript, what does ECMA stand for?',
-    answerOptions: [
-      'European Association for Standardizing Information and Communication Systems',
-      'European Council for Making and Arranging JavaScript Principles',
-      'European Association for Strategizing Implementation of Communication Systems',
-      'European Antarctican Massachusetts Alliance for JavaScript'
-    ],
-    correctAnswer: 'European Association for Standardizing Information and Communication Systems',
-    answerSelect: 6,
-    questionAsked: false,
-  },
-  //Seventh Question
-  {
-    question: 'What does the following run in the console: "The morning is upon us.".slice(-3)',
-    answerOptions: [
-      '"us."',
-      'undefined',
-      '"the morning is upon us"',
-      'us'
-    ],
-    correctAnswer: '"us."',
-    answerSelect: 7,
-    questionAsked: false,
-  },
-];
+let questionList = defaultQuestionList();
 
 //Initial store
-let store = {
-  view: 'start',
-  score: 0,
-  currentQuestionCount: 1,
-  submitBtnClicked: false,
-  quizCompleted: false,
-};
+let store = defaultStore();
 
 function defaultStore() {
   return {
@@ -209,7 +110,7 @@ function defaultQuestionList() {
     },
   ];
 }
-  
+
 
 
 //Template generators
@@ -234,7 +135,7 @@ function generateRandomQuestion() {
 
   randomQuestion.questionAsked = true;
 
-  
+
 
   console.log(random);
   //Match randomQuestion's answerSelect value to the answerSelect
@@ -312,8 +213,8 @@ function handleStartButton() {
 function handleSubmitButton () {
   $('#quiz-form').submit(function (event) {
     event.preventDefault();
-    let submittedAnswer = $('input[name=\'clicked-question\']:checked').val();   
-    console.log(submittedAnswer); 
+    let submittedAnswer = $('input[name=\'clicked-question\']:checked').val();
+    console.log(submittedAnswer);
     console.log('js-submit-btn was clicked.');
     store.submitBtnClicked = true;
     console.log(store.submitBtnClicked);
