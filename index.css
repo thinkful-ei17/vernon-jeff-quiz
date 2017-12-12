@@ -1,9 +1,9 @@
 html, body {
   background:
   linear-gradient(
-		rgba(255, 255, 255, 0.7),
-		rgba(255, 255, 255, 0.7)),
-    url(https://images.unsplash.com/photo-1498753427761-548428edfa67?auto=format&fit=crop&w=2089&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D) no-repeat center center fixed;
+		rgba(255, 255, 255, 0.05),
+		rgba(255, 255, 255, 0.05)),
+    url(https://images.unsplash.com/photo-1477244075012-5cc28286e465?auto=format&fit=crop&w=634&q=80&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -27,6 +27,7 @@ body {
 
 header {
   text-align: center;
+  color: white;
 }
 
 main {
@@ -41,7 +42,7 @@ main {
   padding-bottom: 20px;
   border-radius: 10px;
 
-  background-color: #c7c7c7;
+  background-color: #f2f0f0;
 }
 
 header {
