@@ -35,7 +35,7 @@ let questionList = [
     answerOptions: [
       '2',
       '“False”',
-      '“”',
+      '""',
       '‘Truthy’'
     ],
     correctAnswer: '""',
@@ -213,7 +213,6 @@ function defaultQuestionList() {
 
 
 //Template generators
-
 let randomQuestion;
 let counter = 0;
 const objs = [];
@@ -235,32 +234,7 @@ function generateRandomQuestion() {
 
   randomQuestion.questionAsked = true;
 
-  // arr = list of objs that have questionAsked set as true
-  // counter = arr.length
-
-  //
-  //   questionList[random].questionAsked = true;
-  //   //
-  // // retrieve how many of ur obj have questionAsked set to true.
-  // //
-  //
-  //   let s = questionList.forEach(function (obj) {
-  //     console.log("nope?");
-  //     console.log(obj.questionAsked);
-  //      return obj.questionAsked === true;
-  //   });
-  //
-  //   console.log("!!!!");
-  //   console.log(s);
-  //
-  //   // if (counter !== questionList.length){
-  //   //   // return
-  //   // }
-  //   //
-  //   // if (randomQuestion.questionAsked === true) {
-  //   //   counter++;
-  //   //   generateRandomQuestion();
-  //   // }
+  
 
   console.log(random);
   //Match randomQuestion's answerSelect value to the answerSelect
@@ -272,7 +246,7 @@ function generateRandomQuestion() {
 
 
 
-//Rendering Functions
+/////Rendering Functions//////
 function render(){
   if (store.view === 'start'){
     $('.start').show();
@@ -302,30 +276,28 @@ function generateAnswerList(QuestionGenerator) {
 
   $('.question-list').html(`
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}'>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}' required>
   <label for="form-option-1">${randomQuestion.answerOptions[0]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[1]}'>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[1]}' required>
   <label for="form-option-2">${randomQuestion.answerOptions[1]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[2]}'>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[2]}' required>
   <label for="form-option-3">${randomQuestion.answerOptions[2]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[3]}'>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[3]}' required>
   <label for="form-option-4">${randomQuestion.answerOptions[3]}</label></div>`)
   ;
 }
 
 
+//////Event handlers//////
 
 
-//Event handlers
-// function nextQuestion () {
-// }
-
+//Button that handles when the start button is clicked.
 function handleStartButton() {
   $('.start').on('click','.js-start-btn', function () {
     console.log('js-start-btn was clicked.');
@@ -336,6 +308,7 @@ function handleStartButton() {
   });
 }
 
+//Button that handles when the submit button is clicked.
 function handleSubmitButton () {
   $('#quiz-form').submit(function (event) {
     event.preventDefault();
@@ -365,7 +338,6 @@ function userInCorrectAnswerSubmitted(answer) {
 function userCorrectAnswerSubmitted(answer) {
   store.score++;
   $('.correct-updater').html(`Correct!`);
-
 }
 
 //Function that updates counter after each question
@@ -378,6 +350,7 @@ function updateCounter() {
   }
 }
 
+//Handles when the user clicks next question
 function handleNextQuestionButton () {
   $('.quiz').on('click','.js-next-question-btn', function () {
     console.log('js-next-question-btn was clicked.');
@@ -399,6 +372,8 @@ function handleNextQuestionButton () {
   });
 }
 
+//Restarts the game, sets store to defult, and renders current
+//state.
 function handleStartOverButton () {
   $('.results').on('click','.js-startover-btn', function () {
     console.log('js-startover-btn was clicked.');
@@ -418,14 +393,15 @@ function handleStartOverButton () {
     console.log(store.currentQuestionCount);
   });
 }
+
 //Function that initializes all event listeners when DOM is ready
 function handleQuizEventListeners() {
-  render();
+  render();//Necessary?
   handleStartButton();
   handleNextQuestionButton();
   handleSubmitButton();
   handleStartOverButton();
-  generateAnswerList(generateRandomQuestion);
+  generateAnswerList(generateRandomQuestion);//Necessary?
 }
 
 $(handleQuizEventListeners);
