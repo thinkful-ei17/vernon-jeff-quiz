@@ -13,6 +13,7 @@ function defaultStore() {
     currentQuestionCount: 1,
     submitBtnClicked: false,
     quizCompleted: false,
+    randomQuestion: null,
   };
 }
 
@@ -111,12 +112,7 @@ function defaultQuestionList() {
   ];
 }
 
-
-
 //Template generators
-let randomQuestion;
-let counter = 0;
-const objs = [];
 function generateRandomQuestion() {
   let availableQs = questionList.filter(function (n){
     return n.questionAsked === false;
@@ -128,21 +124,12 @@ function generateRandomQuestion() {
   let max = availableQs.length - 1;
   let min = 0;
   let random = Math.floor(Math.random() * (max - min + 1) + min);
-  randomQuestion = availableQs[random];
-
+  store.randomQuestion = availableQs[random];
   console.log(random);
   console.log(availableQs);
-
-  randomQuestion.questionAsked = true;
-
-
-
+  store.randomQuestion.questionAsked = true;
   console.log(random);
-  //Match randomQuestion's answerSelect value to the answerSelect
-  //in original array of objects, (find) then change questionAsked
-  //of original object.questionAsked if there's a match
-  // console.log(questionList[random].questionAsked);
-  return randomQuestion;
+  return store.randomQuestion;
 }
 
 
@@ -168,29 +155,29 @@ function render(){
 
 function generateAnswerList(QuestionGenerator) {
   QuestionGenerator();
-  console.log(randomQuestion);
+  console.log(store.randomQuestion);
   $('.question-title-container').html(
     `<div class='question-counter'>
     Question # ${store.currentQuestionCount}
     <span class="separator">: </span>
-    <span class="question">${randomQuestion.question}</span> </div>`);
+    <span class="question">${store.randomQuestion.question}</span> </div>`);
 
   $('.question-list').html(`
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[0]}' required>
-  <label for="form-option-1">${randomQuestion.answerOptions[0]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${store.randomQuestion.answerOptions[0]}' required>
+  <label for="form-option-1">${store.randomQuestion.answerOptions[0]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[1]}' required>
-  <label for="form-option-2">${randomQuestion.answerOptions[1]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${store.randomQuestion.answerOptions[1]}' required>
+  <label for="form-option-2">${store.randomQuestion.answerOptions[1]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[2]}' required>
-  <label for="form-option-3">${randomQuestion.answerOptions[2]}</label>
+  <input type="radio" name="clicked-question" class='radio-btn' value='${store.randomQuestion.answerOptions[2]}' required>
+  <label for="form-option-3">${store.randomQuestion.answerOptions[2]}</label>
   </div>
   <div class='input-section'>
-  <input type="radio" name="clicked-question" class='radio-btn' value='${randomQuestion.answerOptions[3]}' required>
-  <label for="form-option-4">${randomQuestion.answerOptions[3]}</label></div>`)
+  <input type="radio" name="clicked-question" class='radio-btn' value='${store.randomQuestion.answerOptions[3]}' required>
+  <label for="form-option-4">${store.randomQuestion.answerOptions[3]}</label></div>`)
   ;
 }
 
@@ -218,7 +205,7 @@ function handleSubmitButton () {
     console.log('js-submit-btn was clicked.');
     store.submitBtnClicked = true;
     console.log(store.submitBtnClicked);
-    if (submittedAnswer === randomQuestion.correctAnswer) {
+    if (submittedAnswer === store.randomQuestion.correctAnswer) {
       console.log('You got it right!');
       userCorrectAnswerSubmitted(submittedAnswer);
     }
@@ -232,7 +219,7 @@ function handleSubmitButton () {
 //Create a function that handles if the user was incorrect
 
 function userInCorrectAnswerSubmitted(answer) {
-  $('.correct-updater').html(`Incorrect! The correct answer is: ${randomQuestion.correctAnswer}`);
+  $('.correct-updater').html(`Incorrect! The correct answer is: ${store.randomQuestion.correctAnswer}`);
 }
 
 //Create a function that handles if the user was correct
