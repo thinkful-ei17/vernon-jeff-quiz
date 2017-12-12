@@ -12,8 +12,9 @@ function defaultStore() {
     score: 0,
     currentQuestionCount: 1,
     submitBtnClicked: false,
-    quizCompleted: false,
+    // quizCompleted: false,
     randomQuestion: null,
+    answerSubmitted: false,
   };
 }
 
@@ -118,7 +119,7 @@ function generateRandomQuestion() {
     return n.questionAsked === false;
   });
   if (availableQs.length === 0) {
-    store.quizCompleted = true;
+    // store.quizCompleted = true;
     return null;
   }
   let max = availableQs.length - 1;
@@ -143,11 +144,15 @@ function render(){
     $('.start').hide();
     $('.results').hide();
     (generateAnswerList(generateRandomQuestion));
+    resetCorrectUpdaterHtml();
+    updateCounter();
+    checkQuizCompleted();
   }
   else if (store.view === 'results') {
     $('.results').show();
     $('.start').hide();
     $('.quiz').hide();   
+    updateCounter();
   }
 }
 
@@ -179,53 +184,6 @@ function generateAnswerList(generateRandomQuestion) {
   ;
 }
 
-//////Event handlers//////
-
-
-//Button that handles when the start button is clicked.
-function handleStartButton() {
-  $('.start').on('click','.js-start-btn', function () {
-    console.log('js-start-btn was clicked.');
-    store.view = 'quiz';
-    updateCounter();
-    render();
-    // generateAnswerList(generateRandomQuestion);
-  });
-}
-
-//Button that handles when the submit button is clicked.
-function handleSubmitButton () {
-  $('#quiz-form').submit(function (event) {
-    event.preventDefault();
-    let submittedAnswer = $('input[name=\'clicked-question\']:checked').val();
-    console.log(submittedAnswer);
-    console.log('js-submit-btn was clicked.');
-    store.submitBtnClicked = true;
-    console.log(store.submitBtnClicked);
-    if (submittedAnswer === store.randomQuestion.correctAnswer) {
-      console.log('You got it right!');
-      userCorrectAnswerSubmitted(submittedAnswer);
-    }
-    else {
-      userInCorrectAnswerSubmitted(submittedAnswer);
-    }
-    updateCounter();
-  });
-}
-
-//Create a function that handles if the user was incorrect
-
-function userInCorrectAnswerSubmitted(answer) {
-  $('.correct-updater').html(`Incorrect! The correct answer is: ${store.randomQuestion.correctAnswer}`);
-}
-
-//Create a function that handles if the user was correct
-function userCorrectAnswerSubmitted(answer) {
-  store.score++;
-  $('.correct-updater').html(`Correct!`);
-}
-
-//Function that updates counter after each question
 function updateCounter() {
   if (store.view === 'results') {
     $('.correct-counter').html(`Quiz Results: ${store.score} / ${questionList.length}`);
@@ -235,24 +193,84 @@ function updateCounter() {
   }
 }
 
+function checkCorrectAnswer() {
+  let submittedAnswer = $('input[name=\'clicked-question\']:checked').val();
+  console.log(store.submitBtnClicked);
+  if (submittedAnswer === store.randomQuestion.correctAnswer) {
+    console.log('You got it right!');
+    userCorrectAnswerSubmitted(submittedAnswer);
+  }
+  else {
+    userInCorrectAnswerSubmitted(submittedAnswer);
+  }
+}
+
+function checkSubmitBtnClicked () {
+  if (store.submitBtnClicked === true) {
+    ++store.currentQuestionCount;
+    store.submitBtnClicked = false;
+    console.log(store.submitBtnClicked);
+  }
+}
+
+function checkQuizCompleted () {
+  console.log(store.currentQuestionCount);
+  console.log(questionList.length);
+  if (store.currentQuestionCount === questionList.length) {
+    store.currentQuestionCount = 1;
+    // store.quizCompleted = true;
+    store.view = 'results';
+  }
+}
+
+function resetCorrectUpdaterHtml() {
+  if (store.answerSubmitted === false) {
+    $('.correct-updater').html('');
+  }
+}
+
+
+//Function that handles if the user was incorrect
+function userInCorrectAnswerSubmitted(answer) {
+  $('.correct-updater').html(`Incorrect! The correct answer is: ${store.randomQuestion.correctAnswer}`);
+}
+
+//Function that handles if the user was correct
+function userCorrectAnswerSubmitted(answer) {
+  store.score++;
+  $('.correct-updater').html('Correct!');
+}
+
+//////Event handlers//////
+
+
+//Button that handles when the start button is clicked.
+function handleStartButton() {
+  $('.start').on('click','.js-start-btn', function () {
+    store.view = 'quiz';
+    updateCounter();
+    render();
+  });
+}
+
+//Button that handles when the submit button is clicked.
+function handleSubmitButton () {
+  $('#quiz-form').submit(function (event) {
+    event.preventDefault();
+    console.log('js-submit-btn was clicked.');
+    store.submitBtnClicked = true;
+    console.log(store.submitBtnClicked);
+    checkCorrectAnswer();
+    updateCounter();
+  });
+}
+
 //Handles when the user clicks next question
 function handleNextQuestionButton () {
   $('.quiz').on('click','.js-next-question-btn', function () {
     console.log('js-next-question-btn was clicked.');
     event.preventDefault();
-    $('.correct-updater').html('');
-    if (store.submitBtnClicked === true) {
-      ++store.currentQuestionCount;
-      store.submitBtnClicked = false;
-      console.log(store.submitBtnClicked);
-      // generateAnswerList(generateRandomQuestion);
-    }
-    if (store.quizCompleted === true) {
-      store.view = 'results';
-      store.currentQuestionCount = 1;
-      // generateAnswerList(QuestionGenerator);
-    }
-    updateCounter();
+    checkSubmitBtnClicked();
     render();
   });
 }
