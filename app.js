@@ -262,8 +262,10 @@ function handleNextQuestionButton () {
   $('.quiz').on('click','.js-next-question-btn', function () {
     console.log('js-next-question-btn was clicked.');
     event.preventDefault();
-    // checkSubmitBtnClicked();
-    render();
+    if (store.submitBtnClicked === true) {
+      render();
+    }
+
   });
 }
 
