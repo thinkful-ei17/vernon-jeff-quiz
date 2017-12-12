@@ -29,7 +29,6 @@ function defaultQuestionList() {
         'script'
       ],
       correctAnswer: 'script',
-      answerSelect: 1,
       questionAsked: false,
     },
     //Second question
@@ -42,7 +41,6 @@ function defaultQuestionList() {
         'A variable assigned to a function'
       ],
       correctAnswer: 'A variable that gets passed to the function when its called.',
-      answerSelect: 2,
       questionAsked: false,
     },
     //Third question
@@ -55,7 +53,6 @@ function defaultQuestionList() {
         '‘Truthy’'
       ],
       correctAnswer: '""',
-      answerSelect: 3,
       questionAsked: false,
     },
     //Fourth Question
@@ -68,7 +65,6 @@ function defaultQuestionList() {
         'x'
       ],
       correctAnswer: '"undefined"',
-      answerSelect: 4,
       questionAsked: false,
     },
     //Fifth Question
@@ -81,7 +77,6 @@ function defaultQuestionList() {
         '\\ “Test Text \\'
       ],
       correctAnswer: '// “Test Text” //',
-      answerSelect: 5,
       questionAsked: false,
     },
     //Sixth Question
@@ -94,7 +89,6 @@ function defaultQuestionList() {
         'European Antarctican Massachusetts Alliance for JavaScript'
       ],
       correctAnswer: 'European Association for Standardizing Information and Communication Systems',
-      answerSelect: 6,
       questionAsked: false,
     },
     //Seventh Question
@@ -107,7 +101,6 @@ function defaultQuestionList() {
         'us'
       ],
       correctAnswer: '"us."',
-      answerSelect: 7,
       questionAsked: false,
     },
   ];
@@ -152,8 +145,8 @@ function render(){
   else if (store.view === 'results') {
     $('.results').show();
     $('.start').hide();
-    $('.quiz').hide();   
-    updateCounter();
+    $('.quiz').hide();
+    changeCounter();
   }
 }
 
@@ -186,12 +179,12 @@ function generateAnswerList(generateRandomQuestion) {
 }
 
 function updateCounter() {
-  if (store.view === 'results') {
-    $('.correct-counter').html(`Quiz Results: ${store.score} / ${questionList.length}`);
-  }
-  else {
     $('.correct-counter').html(`Progress: ${store.score} / ${questionList.length}`);
-  }
+
+}
+
+function changeCounter() {
+  $('.correct-counter').html(`Quiz Results: ${store.score} / ${questionList.length}`);
 }
 
 function checkCorrectAnswer() {
@@ -218,8 +211,6 @@ function checkQuizCompleted () {
   console.log(store.currentQuestionCount);
   console.log(questionList.length);
   if (store.currentQuestionCount === questionList.length) {
-    store.currentQuestionCount = 1;
-    // store.quizCompleted = true;
     store.view = 'results';
   }
 }
@@ -248,7 +239,6 @@ function userCorrectAnswerSubmitted(answer) {
 function handleStartButton() {
   $('.start').on('click','.js-start-btn', function () {
     store.view = 'quiz';
-    updateCounter();
     render();
   });
 }
@@ -258,10 +248,12 @@ function handleSubmitButton () {
   $('#quiz-form').submit(function (event) {
     event.preventDefault();
     console.log('js-submit-btn was clicked.');
-    store.submitBtnClicked = true;
-    console.log(store.submitBtnClicked);
-    checkCorrectAnswer();
-    updateCounter();
+    if (store.submitBtnClicked === false) {
+      store.submitBtnClicked = true;
+      console.log(store.submitBtnClicked);
+      checkCorrectAnswer();
+      updateCounter();
+    }
   });
 }
 
